@@ -14,12 +14,17 @@ namespace HexMapEngine {
     public class HexMapGenerator : MonoBehaviour {
 
         HexMapRenderer _renderer;
+        public int radius = 0;
 
-        public static HexMap StandardMap() {
+        HexMap GenerateMap() {
             HexMap result = ScriptableObject.CreateInstance<HexMap>();
             result.hideFlags = HideFlags.HideAndDontSave;
             var hexCells = new List<HexCell>();
-            hexCells.Add(new HexCell(0, 0));
+            for (int q = -radius; q <= radius; q++) {
+                for (int r = Mathf.Max(-radius, -q - radius); r <= Mathf.Min(radius, -q + radius); r++) {
+                    hexCells.Add(new HexCell(q, r));
+                }
+            }
             result.SetHexCells(hexCells);
 
             return result;
@@ -28,7 +33,11 @@ namespace HexMapEngine {
         void Start() {
             _renderer = GetComponent<HexMapRenderer>();
 
-            _renderer.HexMap = StandardMap();
+            _renderer.HexMap = GenerateMap();
+        }
+
+        void OnValidate() {
+            GetComponent<HexMapRenderer>().HexMap = GenerateMap();
         }
 
     }
