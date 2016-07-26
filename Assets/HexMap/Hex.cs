@@ -58,6 +58,16 @@ namespace HexMapEngine {
         public static Hex[] CoordinateRestrainedGroup(int qmax, int rmax, int smax) {
             return CoordinateRestrainedGroup(-qmax, qmax, -rmax, rmax, -smax, smax);
         }
+
+        public static Hex Center(IEnumerable<Hex> hexes) {
+            var result = new Hex(0, 0);
+            int count = 0;
+            foreach (Hex h in hexes) {
+                result += h;
+                count++;
+            }
+            return result / count;
+        }
         #endregion
 
         #region Operators
@@ -98,6 +108,10 @@ namespace HexMapEngine {
 
         public static Hex operator*(Hex a, int k) {
             return new Hex(a.q * k, a.r * k);
+        }
+
+        public static Hex operator/(Hex a, int k) {
+            return new Hex(a.q / k, a.r / k);
         }
         #endregion
 
