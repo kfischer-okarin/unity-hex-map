@@ -26,6 +26,24 @@ namespace HexMapEngine {
             return (this - other).Length;
         }
 
+        #region Related Hexes
+        public Hex[] GetOffsetHexes(Hex[] offsets) {
+            var result = new Hex[offsets.Length];
+            for (int i = 0; i < offsets.Length; i++)
+                result[i] = this + offsets[i];
+            return result;
+        }
+
+        static Hex[] NEIGHBOR_OFFSETS = { 
+            new Hex(1, 0), new Hex(0, 1), new Hex(-1, 1),
+            new Hex(-1, 0), new Hex(0, -1), new Hex(1, -1)
+        };
+
+        public Hex[] GetNeighbors() {
+            return GetOffsetHexes(NEIGHBOR_OFFSETS);
+        }
+        #endregion
+
         #region Operators
         // Implements IEquatable
         public bool Equals(Hex other) {
