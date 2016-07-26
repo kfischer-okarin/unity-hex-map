@@ -25,7 +25,10 @@ namespace HexMapEngine {
 
         void OnValidate() {
             _rng = new System.Random(seed);
-            GetComponent<HexMapRenderer>().HexMap = GenerateMap();
+
+            HexMap newMap = GenerateMap();
+            newMap.hideFlags = HideFlags.HideAndDontSave;
+            GetComponent<HexMapRenderer>().HexMap = newMap;
         }
 
     }

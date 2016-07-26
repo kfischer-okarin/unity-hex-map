@@ -16,7 +16,6 @@ public class DimensionRestrainedGenerator : HexMapGenerator {
 
     protected override HexMap GenerateMap() {
         HexMap result = ScriptableObject.CreateInstance<HexMap>();
-        result.hideFlags = HideFlags.HideAndDontSave;
 
         var hexData = new List<HexData>();
         foreach (Hex h in Hex.CoordinateRestrainedGroup(qMax, rMax, sMax)) {

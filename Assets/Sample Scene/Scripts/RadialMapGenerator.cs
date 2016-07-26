@@ -14,7 +14,6 @@ public class RadialMapGenerator : HexMapGenerator {
 
     protected override HexMap GenerateMap() {
         HexMap result = ScriptableObject.CreateInstance<HexMap>();
-        result.hideFlags = HideFlags.HideAndDontSave;
 
         var hexData = new List<HexData>();
         foreach (Hex h in Hex.CoordinateRestrainedGroup(radius, radius, radius)) {
