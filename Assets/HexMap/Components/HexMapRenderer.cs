@@ -23,8 +23,6 @@ namespace HexMapEngine {
             }
         }
 
-        public float gridSize = 1;
-
         void Start() {
             if (_hexMap != null)
                 GenerateMesh();
@@ -40,6 +38,10 @@ namespace HexMapEngine {
         }
 
         #region Mesh Generation
+        public float gridSize = 1;
+
+        public HexTileset tileset;
+
         static float SQRT_3 = Mathf.Sqrt(3);
         const float TO_RAD_FACTOR = Mathf.PI / 180;
 
@@ -55,12 +57,6 @@ namespace HexMapEngine {
             return new Vector2(center.x + gridSize * Mathf.Cos(angle_rad), center.y - gridSize * Mathf.Sin(angle_rad));
         }
 
-        static Vector2[] HEX_UVS = { new Vector2(0.5f, 0.5f), 
-            new Vector2(0.5f + SQRT_3 / 4f, 0.25f), new Vector2(0.5f, 0), 
-            new Vector2(0.5f - SQRT_3 / 4f, 0.25f), new Vector2(0.5f - SQRT_3 / 4f, 0.75f), 
-            new Vector2(0.5f, 1), new Vector2(0.5f + SQRT_3 / 4f, 0.75f)
-        };
-
         public void GenerateMesh() {
             var newMesh = new Mesh();
             newMesh.hideFlags = HideFlags.HideAndDontSave;
@@ -68,7 +64,6 @@ namespace HexMapEngine {
             _gridPoints.Clear();
             var vertices = new List<Vector3>();
             var triangles = new List<int>();
-            var uvs = new List<Vector2>();
 
             var cornerOffsets = new Vector2[6];
             for (int i = 0; i < 6; i++) {
@@ -91,14 +86,31 @@ namespace HexMapEngine {
                 for (int i = 1; i <= 6; i++) {
                     triangles.AddRange(new int[] { centerIndex, centerIndex + i, centerIndex + (i == 6 ? 1 : i + 1) });
                 }
-
-                uvs.AddRange(HEX_UVS);
             }
 
-            newMesh.vertices = vertices.ToArray();
-            newMesh.uv = uvs.ToArray();
-            newMesh.triangles = triangles.ToArray();
+            newMesh.SetVertices(vertices);
+            newMesh.SetTriangles(triangles, 0);
             GetComponent<MeshFilter>().sharedMesh = newMesh;
+
+            UpdateTexture();
+            UpdateUV();
+        }
+
+        void UpdateTexture() {
+            var material = new Material(Shader.Find("Unlit/Texture"));
+            material.hideFlags = HideFlags.HideAndDontSave;
+            material.mainTexture = tileset.texture;
+            GetComponent<MeshRenderer>().sharedMaterial = material;
+        }
+
+        void UpdateUV() {
+            var uvs = new List<Vector2>();
+
+            foreach (HexCell c in _hexMap.HexCells) {
+                uvs.AddRange(tileset.GetUVs(c.tileIndex));
+            }
+
+            GetComponent<MeshFilter>().sharedMesh.SetUVs(0, uvs);
         }
         #endregion
 

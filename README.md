@@ -12,3 +12,5 @@ Hex Map data structure and renderer for use in Unity.
 ## License
 
 The whole source code is releases under the [MIT License](https://opensource.org/licenses/MIT).
+
+The sample tileset was created using the [Hexagon Pack](http://opengameart.org/content/hexagon-pack-310x) by Kenney on OpenGameArt.

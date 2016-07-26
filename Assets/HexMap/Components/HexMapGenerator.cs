@@ -22,7 +22,7 @@ namespace HexMapEngine {
             var hexCells = new List<HexCell>();
             for (int q = -radius; q <= radius; q++) {
                 for (int r = Mathf.Max(-radius, -q - radius); r <= Mathf.Min(radius, -q + radius); r++) {
-                    hexCells.Add(new HexCell(q, r));
+                    hexCells.Add(new HexCell(q, r, 0));
                 }
             }
             result.SetHexCells(hexCells);

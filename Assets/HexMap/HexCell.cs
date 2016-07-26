@@ -11,9 +11,12 @@ namespace HexMapEngine {
 
         public int q, r;
 
-        public HexCell(int q, int r) {
+        public int tileIndex;
+
+        public HexCell(int q, int r, int tileIndex) {
             this.q = q;
             this.r = r;
+            this.tileIndex = tileIndex;
         }
 
     }
