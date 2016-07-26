@@ -40,15 +40,18 @@ namespace HexMapEngine {
         }
 
         #region Mesh Generation
+        static float SQRT_3 = Mathf.Sqrt(3);
+        const float TO_RAD_FACTOR = Mathf.PI / 180;
+
         // Pointy top, q right, r bottom-right
         Vector2 GetHexCenter(HexCell cell) {
-            return new Vector2(gridSize * Mathf.Sqrt(3) * (cell.q + cell.r / 2f), gridSize * (-3f / 2f) * cell.r);
+            return new Vector2(gridSize * SQRT_3 * (cell.q + cell.r / 2f), gridSize * (-1.5f) * cell.r);
         }
 
         // 0 bottom right, 1 bottom, .. 5 top right
         Vector2 GetHexCorner(Vector2 center, int corner) {
             var angle_deg = 60 * corner + 30;
-            var angle_rad = Mathf.PI / 180 * angle_deg;
+            var angle_rad = TO_RAD_FACTOR * angle_deg;
             return new Vector2(center.x + gridSize * Mathf.Cos(angle_rad), center.y - gridSize * Mathf.Sin(angle_rad));
         }
 
@@ -61,6 +64,11 @@ namespace HexMapEngine {
             var triangles = new List<int>();
             var uvs = new List<Vector2>();
 
+            var cornerOffsets = new Vector2[6];
+            for (int i = 0; i < 6; i++) {
+                cornerOffsets[i] = GetHexCorner(new Vector2(0, 0), i);
+            }
+
             foreach (HexCell c in _hexMap.HexCells) {
                 Vector2 center = GetHexCenter(c);
                 vertices.Add(center);
@@ -70,7 +78,7 @@ namespace HexMapEngine {
                 var corners = new int[6];
 
                 for (int i = 0; i < 6; i++) {
-                    Vector2 corner = GetHexCorner(center, i);
+                    Vector2 corner = center + cornerOffsets[i];
                     if (vertices.Contains(corner)) {
                         corners[i] = vertices.IndexOf(corner);
                     } else {
