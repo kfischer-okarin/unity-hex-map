@@ -55,6 +55,12 @@ namespace HexMapEngine {
             return new Vector2(center.x + gridSize * Mathf.Cos(angle_rad), center.y - gridSize * Mathf.Sin(angle_rad));
         }
 
+        static Vector2[] HEX_UVS = { new Vector2(0.5f, 0.5f), 
+            new Vector2(0.5f + SQRT_3 / 4f, 0.25f), new Vector2(0.5f, 0), 
+            new Vector2(0.5f - SQRT_3 / 4f, 0.25f), new Vector2(0.5f - SQRT_3 / 4f, 0.75f), 
+            new Vector2(0.5f, 1), new Vector2(0.5f + SQRT_3 / 4f, 0.75f)
+        };
+
         public void GenerateMesh() {
             var newMesh = new Mesh();
             newMesh.hideFlags = HideFlags.HideAndDontSave;
@@ -72,27 +78,21 @@ namespace HexMapEngine {
             foreach (HexCell c in _hexMap.HexCells) {
                 Vector2 center = GetHexCenter(c);
                 vertices.Add(center);
-                uvs.Add(Vector2.zero);
 
                 int centerIndex = vertices.Count - 1;
-                var corners = new int[6];
 
                 for (int i = 0; i < 6; i++) {
                     Vector2 corner = center + cornerOffsets[i];
-                    if (vertices.Contains(corner)) {
-                        corners[i] = vertices.IndexOf(corner);
-                    } else {
-                        vertices.Add(corner);
-                        uvs.Add(Vector2.zero);
-                        corners[i] = vertices.Count - 1;
-                    }
+                    vertices.Add(corner);
 
                     _gridPoints.Add(corner);
                 }
 
-                for (int i = 0; i < 6; i++) {
-                    triangles.AddRange(new int[] { centerIndex, corners[i], corners[i == 5 ? 0 : i + 1] });
+                for (int i = 1; i <= 6; i++) {
+                    triangles.AddRange(new int[] { centerIndex, centerIndex + i, centerIndex + (i == 6 ? 1 : i + 1) });
                 }
+
+                uvs.AddRange(HEX_UVS);
             }
 
             newMesh.vertices = vertices.ToArray();
