@@ -8,16 +8,18 @@ using UnityEngine;
 using System.Collections.Generic;
 using HexMapEngine;
 
-public class RadialMapGenerator : HexMapGenerator {
+public class DimensionRestrainedGenerator : HexMapGenerator {
 
-    public int radius = 0;
+    public int qMax = 0;
+    public int rMax = 0;
+    public int sMax = 0;
 
     protected override HexMap GenerateMap() {
         HexMap result = ScriptableObject.CreateInstance<HexMap>();
         result.hideFlags = HideFlags.HideAndDontSave;
 
         var hexData = new List<HexData>();
-        foreach (Hex h in Hex.CoordinateRestrainedGroup(radius, radius, radius)) {
+        foreach (Hex h in Hex.CoordinateRestrainedGroup(qMax, rMax, sMax)) {
             hexData.Add(new HexData(h, RNG.Next(4)));
         }
         result.SetHexData(hexData);

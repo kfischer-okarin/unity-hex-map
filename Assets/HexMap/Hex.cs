@@ -5,6 +5,7 @@
  * You can obtain one at https://opensource.org/licenses/MIT. */
 
 using System;
+using System.Collections.Generic;
 
 namespace HexMapEngine {
 
@@ -41,6 +42,21 @@ namespace HexMapEngine {
 
         public Hex[] GetNeighbors() {
             return GetOffsetHexes(NEIGHBOR_OFFSETS);
+        }
+
+        public static Hex[] CoordinateRestrainedGroup(int qmin, int qmax, int rmin, int rmax, int smin, int smax) {
+            var result = new List<Hex>();
+            for (int i = qmin; i <= qmax; i++) {
+                for (int j = rmin; j <= rmax; j++) {
+                    if (-(i + j) >= smin && -(i + j) <= smax)
+                        result.Add(new Hex(i, j));
+                }
+            }
+            return result.ToArray();
+        }
+
+        public static Hex[] CoordinateRestrainedGroup(int qmax, int rmax, int smax) {
+            return CoordinateRestrainedGroup(-qmax, qmax, -rmax, rmax, -smax, smax);
         }
         #endregion
 
