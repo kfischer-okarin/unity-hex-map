@@ -15,13 +15,13 @@ public class RadialMapGenerator : HexMapGenerator {
     protected override HexMap GenerateMap() {
         HexMap result = ScriptableObject.CreateInstance<HexMap>();
         result.hideFlags = HideFlags.HideAndDontSave;
-        var hexCells = new List<HexCell>();
+        var hexData = new List<HexData>();
         for (int q = -radius; q <= radius; q++) {
             for (int r = Mathf.Max(-radius, -q - radius); r <= Mathf.Min(radius, -q + radius); r++) {
-                hexCells.Add(new HexCell(q, r, RNG.Next(4)));
+                hexData.Add(new HexData(new Hex(q, r), RNG.Next(4)));
             }
         }
-        result.SetHexCells(hexCells);
+        result.SetHexData(hexData);
 
         return result;
     }

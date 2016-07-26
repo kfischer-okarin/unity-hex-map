@@ -11,24 +11,26 @@ namespace HexMapEngine {
 
     public class HexMap : ScriptableObject {
 
-        List<HexCell> _hexCells;
+        List<HexData> _hexData;
 
-        public HexCell[] HexCells {
-            get { return _hexCells.ToArray(); }
+        public HexData[] HexData {
+            get { return _hexData.ToArray(); }
         }
 
-        Dictionary<string, HexCell> _map;
+        Dictionary<Hex, HexData> _map;
 
-        public void SetHexCells(List<HexCell> hexCells) {
-            _hexCells = hexCells;
-            _map = new Dictionary<string, HexCell>();
-            foreach (HexCell cell in hexCells) {
-                _map.Add(cell.q + "," + cell.r, cell);
+        public void SetHexData(List<HexData> hexData) {
+            _hexData = hexData;
+            _map = new Dictionary<Hex, HexData>();
+            foreach (HexData data in hexData) {
+                _map.Add(data.position, data);
             }
         }
 
-        public HexCell Get(int q, int r) {
-            return _map[q + "," + r];
+        public HexData Get(Hex position) {
+            HexData result;
+            _map.TryGetValue(position, out result);
+            return result;
         }
 
     }

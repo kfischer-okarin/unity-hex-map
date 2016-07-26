@@ -4,18 +4,25 @@
  * If a copy of the license was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT. */
 
+using System;
+
 namespace HexMapEngine {
 
     [System.Serializable]
-    public struct HexCell {
+    public class HexData {
 
-        public int q, r;
+        public Hex position;
 
         public int tileIndex;
 
-        public HexCell(int q, int r, int tileIndex) {
-            this.q = q;
-            this.r = r;
+        public int q { get { return position.q; } }
+
+        public int r { get { return position.r; } }
+
+        public int s { get { return position.s; } }
+
+        public HexData(Hex position, int tileIndex) {
+            this.position = position;
             this.tileIndex = tileIndex;
         }
 

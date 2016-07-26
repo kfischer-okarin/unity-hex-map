@@ -46,7 +46,7 @@ namespace HexMapEngine {
         const float TO_RAD_FACTOR = Mathf.PI / 180;
 
         // Pointy top, q right, r bottom-right
-        Vector2 GetHexCenter(HexCell cell) {
+        Vector2 GetHexCenter(HexData cell) {
             return new Vector2(gridSize * SQRT_3 * (cell.q + cell.r / 2f), gridSize * (-1.5f) * cell.r);
         }
 
@@ -70,7 +70,7 @@ namespace HexMapEngine {
                 cornerOffsets[i] = GetHexCorner(new Vector2(0, 0), i);
             }
 
-            foreach (HexCell c in _hexMap.HexCells) {
+            foreach (HexData c in _hexMap.HexData) {
                 Vector2 center = GetHexCenter(c);
                 vertices.Add(center);
 
@@ -107,7 +107,7 @@ namespace HexMapEngine {
         void UpdateUV() {
             var uvs = new List<Vector2>();
 
-            foreach (HexCell c in _hexMap.HexCells) {
+            foreach (HexData c in _hexMap.HexData) {
                 uvs.AddRange(tileset.GetUVs(c.tileIndex));
             }
 
