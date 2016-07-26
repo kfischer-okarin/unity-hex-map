@@ -164,6 +164,7 @@ MonoBehaviour:
   _hexMap: {fileID: 0}
   gridSize: 1
   tileset: {fileID: 11400000, guid: e793c7d09350fe04b88f7e48785af533, type: 2}
+  renderGrid: 1
   lineMaterial: {fileID: 2100000, guid: 9d703170662f8234c80a3eb852c8329b, type: 2}
 --- !u!114 &938754390
 MonoBehaviour:

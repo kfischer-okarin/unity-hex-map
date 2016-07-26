@@ -80,7 +80,8 @@ namespace HexMapEngine {
                     Vector2 corner = center + cornerOffsets[i];
                     vertices.Add(corner);
 
-                    _gridPoints.Add(corner);
+                    if (renderGrid)
+                        _gridPoints.Add(corner);
                 }
 
                 for (int i = 1; i <= 6; i++) {
@@ -115,27 +116,31 @@ namespace HexMapEngine {
         #endregion
 
         #region Drawing Hex Grid outlines
+        public bool renderGrid = true;
+
         public Material lineMaterial;
 
         List<Vector2> _gridPoints = new List<Vector2>();
 
         void OnRenderObject() {
-            lineMaterial.SetPass(0);
+            if (renderGrid) {
+                lineMaterial.SetPass(0);
 
-            GL.PushMatrix();
-            GL.MultMatrix(transform.localToWorldMatrix);
-            GL.Begin(GL.LINES);
-            {
-                for (int i = 0; i < _gridPoints.Count / 6; i++) {
-                    for (int j = 0; j < 6; j++) {
-                        GL.Vertex(_gridPoints[i * 6 + j]);
-                        GL.Vertex(_gridPoints[i * 6 + (j == 5 ? 0 : j + 1)]);
+                GL.PushMatrix();
+                GL.MultMatrix(transform.localToWorldMatrix);
+                GL.Begin(GL.LINES);
+                {
+                    for (int i = 0; i < _gridPoints.Count / 6; i++) {
+                        for (int j = 0; j < 6; j++) {
+                            GL.Vertex(_gridPoints[i * 6 + j]);
+                            GL.Vertex(_gridPoints[i * 6 + (j == 5 ? 0 : j + 1)]);
+                        }
                     }
                 }
-            }
-            GL.End();
+                GL.End();
 
-            GL.PopMatrix();
+                GL.PopMatrix();
+            }
         }
         #endregion
 
