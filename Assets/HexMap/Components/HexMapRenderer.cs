@@ -61,7 +61,7 @@ namespace HexMapEngine {
             var triangles = new List<int>();
             var uvs = new List<Vector2>();
 
-            foreach (HexCell c in _hexMap.hexCells) {
+            foreach (HexCell c in _hexMap.HexCells) {
                 Vector2 center = GetHexCenter(c);
                 vertices.Add(center);
                 uvs.Add(Vector2.zero);

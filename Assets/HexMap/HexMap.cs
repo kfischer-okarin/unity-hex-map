@@ -11,7 +11,25 @@ namespace HexMapEngine {
 
     public class HexMap : ScriptableObject {
 
-        public List<HexCell> hexCells;
+        List<HexCell> _hexCells;
+
+        public HexCell[] HexCells {
+            get { return _hexCells.ToArray(); }
+        }
+
+        Dictionary<string, HexCell> _map;
+
+        public void SetHexCells(List<HexCell> hexCells) {
+            _hexCells = hexCells;
+            _map = new Dictionary<string, HexCell>();
+            foreach (HexCell cell in hexCells) {
+                _map.Add(cell.q + "," + cell.r, cell);
+            }
+        }
+
+        public HexCell Get(int q, int r) {
+            return _map[q + "," + r];
+        }
 
     }
 

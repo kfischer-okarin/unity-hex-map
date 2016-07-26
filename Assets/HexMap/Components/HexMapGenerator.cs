@@ -18,8 +18,9 @@ namespace HexMapEngine {
         public static HexMap StandardMap() {
             HexMap result = ScriptableObject.CreateInstance<HexMap>();
             result.hideFlags = HideFlags.HideAndDontSave;
-            result.hexCells = new List<HexCell>();
-            result.hexCells.Add(new HexCell(0, 0));
+            var hexCells = new List<HexCell>();
+            hexCells.Add(new HexCell(0, 0));
+            result.SetHexCells(hexCells);
 
             return result;
         }
