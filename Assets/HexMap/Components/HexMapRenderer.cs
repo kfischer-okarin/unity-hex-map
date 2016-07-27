@@ -121,6 +121,21 @@ namespace HexMapEngine {
 
             GetComponent<MeshFilter>().sharedMesh.SetUVs(0, uvs);
         }
+
+        public void UpdateHexUV(Hex position) {
+            HexData data = _hexMap.Get(position);
+            if (data != null) {
+                int index = _hexMap.HexData.IndexOf(data);
+                MeshFilter mesh = GetComponent<MeshFilter>();
+                Vector2[] meshUVs = mesh.mesh.uv;
+
+                Vector2[] newUVs = tileset.GetUVs(data.tileIndex);
+                for (int i = 0; i < 7; i++) {
+                    meshUVs[7 * index + i] = newUVs[i];
+                }
+                mesh.mesh.uv = meshUVs;
+            }
+        }
         #endregion
 
         #region Drawing Hex Grid outlines

@@ -6,6 +6,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace HexMapEngine {
 
@@ -13,8 +14,8 @@ namespace HexMapEngine {
 
         List<HexData> _hexData;
 
-        public HexData[] HexData {
-            get { return _hexData.ToArray(); }
+        public ReadOnlyCollection<HexData> HexData {
+            get { return _hexData.AsReadOnly(); }
         }
 
         Dictionary<Hex, HexData> _map;
