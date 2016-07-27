@@ -19,13 +19,13 @@ namespace HexMapEngine {
             get { return _hexMap; }
             set {
                 _hexMap = value;
-                GenerateMesh();
+                UpdateMesh();
             }
         }
 
         void Start() {
             if (_hexMap != null)
-                GenerateMesh();
+                UpdateMesh();
         }
 
         float _lastGridSize;
@@ -33,7 +33,7 @@ namespace HexMapEngine {
         void OnValidate() {
             if (gridSize != _lastGridSize && _hexMap != null) {
                 _lastGridSize = gridSize;
-                GenerateMesh();
+                UpdateMesh();
             }
         }
 
@@ -65,7 +65,7 @@ namespace HexMapEngine {
             return new Vector2(center.x + gridSize * Mathf.Cos(angle_rad), center.y - gridSize * Mathf.Sin(angle_rad));
         }
 
-        public void GenerateMesh() {
+        public void UpdateMesh() {
             var newMesh = new Mesh();
             newMesh.hideFlags = HideFlags.HideAndDontSave;
 
@@ -102,17 +102,17 @@ namespace HexMapEngine {
             GetComponent<MeshFilter>().sharedMesh = newMesh;
 
             UpdateTexture();
-            UpdateUV();
+            UpdateUVs();
         }
 
-        void UpdateTexture() {
+        public void UpdateTexture() {
             var material = new Material(Shader.Find("Unlit/Texture"));
             material.hideFlags = HideFlags.HideAndDontSave;
             material.mainTexture = tileset.texture;
             GetComponent<MeshRenderer>().sharedMaterial = material;
         }
 
-        void UpdateUV() {
+        public void UpdateUVs() {
             var uvs = new List<Vector2>();
 
             foreach (HexData c in _hexMap.HexData) {
