@@ -4,6 +4,7 @@
  * If a copy of the license was not distributed with this file,
  * You can obtain one at https://opensource.org/licenses/MIT. */
 
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 
@@ -21,7 +22,7 @@ namespace HexMapEngine {
             this.r = r;
         }
 
-        public int Length { get { return (Math.Abs(q) + Math.Abs(r) + Math.Abs(s)) / 2; } }
+        public int Length { get { return (Mathf.Abs(q) + Mathf.Abs(r) + Mathf.Abs(s)) / 2; } }
 
         public int DistanceTo(Hex other) {
             return (this - other).Length;
@@ -86,6 +87,10 @@ namespace HexMapEngine {
             return (51 + q.GetHashCode()) * 51 + r.GetHashCode();
         }
 
+        public override string ToString() {
+            return string.Format("Hex({0}, {1})", q, r);
+        }
+
         public static bool operator==(Hex a, Hex b) {
             return a.q == b.q && a.r == b.r;
         }
@@ -112,6 +117,23 @@ namespace HexMapEngine {
 
         public static Hex operator/(Hex a, int k) {
             return new Hex(a.q / k, a.r / k);
+        }
+
+        public static Hex Round(float q, float r) {
+            int rq = Mathf.RoundToInt(q);
+            int rr = Mathf.RoundToInt(r);
+            int rs = Mathf.RoundToInt(-(q + r));
+
+            float qDiff = Mathf.Abs(q - rq);
+            float rDiff = Mathf.Abs(r - rr);
+            float sDiff = Mathf.Abs(-(q + r) - rs);
+
+            if (qDiff > rDiff && qDiff > sDiff)
+                rq = -(rr + rs);
+            else if (rDiff > sDiff)
+                rr = -(rq + rs);
+
+            return new Hex(rq, rr);
         }
         #endregion
 

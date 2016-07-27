@@ -37,12 +37,20 @@ namespace HexMapEngine {
             }
         }
 
+        public Hex ScreenPointToHex(Vector2 screenPoint) {
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(screenPoint) - transform.position;
+            float q = (worldPoint.x * SQRT_3 * ONE_THIRD + worldPoint.y * ONE_THIRD) / gridSize;
+            float r = (-worldPoint.y * 2 * ONE_THIRD) / gridSize;
+            return Hex.Round(q, r);
+        }
+
         #region Mesh Generation
         public float gridSize = 1;
 
         public HexTileset tileset;
 
         static float SQRT_3 = Mathf.Sqrt(3);
+        const float ONE_THIRD = 1f / 3f;
         const float TO_RAD_FACTOR = Mathf.PI / 180;
 
         // Pointy top, q right, r bottom-right
