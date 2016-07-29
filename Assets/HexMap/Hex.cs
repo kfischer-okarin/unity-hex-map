@@ -29,11 +29,11 @@ namespace HexMapEngine {
         }
 
         #region Related Hexes
-        public Hex[] GetOffsetHexes(Hex[] offsets) {
-            var result = new Hex[offsets.Length];
-            for (int i = 0; i < offsets.Length; i++)
-                result[i] = this + offsets[i];
-            return result;
+        public Hex[] GetOffsetHexes(IEnumerable<Hex> offsets) {
+            var result = new List<Hex>();
+            foreach (Hex h in offsets)
+                result.Add(this + h);
+            return result.ToArray();
         }
 
         static Hex[] NEIGHBOR_OFFSETS = { 
