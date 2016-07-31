@@ -12,7 +12,7 @@ namespace HexMapEngine {
 
     public class HexMap : ScriptableObject {
 
-        List<HexData> _hexData;
+        List<HexData> _hexData = new List<HexData>();
 
         public ReadOnlyCollection<HexData> HexData {
             get { return _hexData.AsReadOnly(); }
