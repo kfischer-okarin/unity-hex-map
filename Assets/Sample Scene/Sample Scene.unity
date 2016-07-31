@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hexMap: {fileID: 0}
+  transparentRendering: 0
   gridSize: 1
   tileset: {fileID: 11400000, guid: e793c7d09350fe04b88f7e48785af533, type: 2}
   renderGrid: 1
@@ -225,6 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hexMap: {fileID: 0}
+  transparentRendering: 0
   gridSize: 1
   tileset: {fileID: 11400000, guid: e793c7d09350fe04b88f7e48785af533, type: 2}
   renderGrid: 1

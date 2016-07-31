@@ -45,6 +45,8 @@ namespace HexMapEngine {
         }
 
         #region Mesh Generation
+        public bool transparentRendering = false;
+
         public float gridSize = 1;
 
         public HexTileset tileset;
@@ -106,7 +108,7 @@ namespace HexMapEngine {
         }
 
         public void UpdateTexture() {
-            var material = new Material(Shader.Find("Unlit/Texture"));
+            var material = transparentRendering ? new Material(Shader.Find("Unlit/Transparent")) : new Material(Shader.Find("Unlit/Texture"));
             material.hideFlags = HideFlags.HideAndDontSave;
             material.mainTexture = tileset.texture;
             GetComponent<MeshRenderer>().sharedMaterial = material;
