@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b5c4bccc3ef13f47b45ac8a90cafa57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generateOnLoad: 1
   seed: 0
   radius: 2
 --- !u!1 &1151801364
@@ -210,6 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef32fbd4daad244fa87738abf4ac92d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generateOnLoad: 1
   seed: 0
   qMax: 2
   rMax: 3

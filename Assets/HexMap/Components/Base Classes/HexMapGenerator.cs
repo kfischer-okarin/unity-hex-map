@@ -12,6 +12,8 @@ namespace HexMapEngine {
     [RequireComponent(typeof(HexMapRenderer))]
     public abstract class HexMapGenerator : MonoBehaviour {
 
+        public bool generateOnLoad = true;
+
         public int seed;
 
         System.Random _rng;
@@ -20,15 +22,18 @@ namespace HexMapEngine {
         protected abstract HexMap GenerateMap();
 
         void Start() {
-            seed = (int) System.DateTime.Now.ToFileTimeUtc();
-            Generate();
+            if (generateOnLoad)
+                Generate(true);
         }
 
         void OnValidate() {
             Generate();
         }
 
-        public void Generate() {
+        public void Generate(bool newSeed = false) {
+            if (newSeed)
+                seed = (int) System.DateTime.Now.ToFileTimeUtc();
+
             _rng = new System.Random(seed);
 
             HexMap newMap = GenerateMap();
