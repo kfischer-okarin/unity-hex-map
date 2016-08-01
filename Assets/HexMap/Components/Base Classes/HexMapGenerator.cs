@@ -20,10 +20,15 @@ namespace HexMapEngine {
         protected abstract HexMap GenerateMap();
 
         void Start() {
-            OnValidate();
+            seed = (int) System.DateTime.Now.ToFileTimeUtc();
+            Generate();
         }
 
         void OnValidate() {
+            Generate();
+        }
+
+        public void Generate() {
             _rng = new System.Random(seed);
 
             HexMap newMap = GenerateMap();
