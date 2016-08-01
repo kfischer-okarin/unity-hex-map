@@ -148,7 +148,7 @@ namespace HexMapEngine {
         List<Vector2> _gridPoints = new List<Vector2>();
 
         void OnRenderObject() {
-            if (renderGrid) {
+            if (renderGrid && lineMaterial != null) {
                 lineMaterial.SetPass(0);
 
                 GL.PushMatrix();
