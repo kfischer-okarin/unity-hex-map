@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace HexMapEngine {
 
+    /// <summary>
+    /// Asset wrapper around Hex Tileset textures to allow access to single tiles.
+    /// </summary>
     [CreateAssetMenu(fileName = "NewHexTileset.asset", menuName = "Hex Grid Tileset", order = 305)]
     public class HexTileset : ScriptableObject {
 

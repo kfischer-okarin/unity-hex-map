@@ -8,6 +8,11 @@ using System;
 
 namespace HexMapEngine {
 
+    /// <summary>
+    /// Data that are stored at a Hex position. 
+    /// In this base class only the index in the Tileset is stored. Actual games would of course extend this class and
+    /// add game-specific data (like Terrain type etc) to the subclass.
+    /// </summary>
     [System.Serializable]
     public class HexData {
 

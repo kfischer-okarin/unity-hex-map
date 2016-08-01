@@ -10,6 +10,9 @@ using System.Collections.ObjectModel;
 
 namespace HexMapEngine {
 
+    /// <summary>
+    /// Wrapper around a dictionary that allows Hex coordinate-based access to stored HexData.
+    /// </summary>
     public class HexMap : ScriptableObject {
 
         List<HexData> _hexData = new List<HexData>();

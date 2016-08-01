@@ -9,6 +9,10 @@ using System.Collections.Generic;
 
 namespace HexMapEngine {
 
+    /// <summary>
+    /// Renders the specified HexMap using the given HexTileset.
+    /// Add to a GameObject that acts as origin of the HexMap.
+    /// </summary>
     [ExecuteInEditMode]
     [RequireComponent(typeof(MeshRenderer), typeof(MeshFilter))]
     public class HexMapRenderer : MonoBehaviour {
@@ -19,13 +23,13 @@ namespace HexMapEngine {
             get { return _hexMap; }
             set {
                 _hexMap = value;
-                UpdateMesh();
+                GenerateMesh();
             }
         }
 
         void Start() {
             if (_hexMap != null)
-                UpdateMesh();
+                GenerateMesh();
         }
 
         float _lastGridSize;
@@ -33,10 +37,14 @@ namespace HexMapEngine {
         void OnValidate() {
             if (gridSize != _lastGridSize && _hexMap != null) {
                 _lastGridSize = gridSize;
-                UpdateMesh();
+                GenerateMesh();
             }
         }
 
+        /// <summary>
+        /// Which Hex coordinate corresponds to the specified screen point?
+        /// Use for click / hover detection.
+        /// </summary>
         public Hex ScreenPointToHex(Vector2 screenPoint) {
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(screenPoint) - transform.position;
             float q = (worldPoint.x * SQRT_3 * ONE_THIRD + worldPoint.y * ONE_THIRD) / gridSize;
@@ -45,8 +53,10 @@ namespace HexMapEngine {
         }
 
         #region Mesh Generation
+        /// <summary>Does the tileset include transparent pixels?</summary>
         public bool transparentRendering = false;
 
+        /// <summary>Size of the Hex Grid (one side) in world units.</summary>
         public float gridSize = 1;
 
         public HexTileset tileset;
@@ -67,7 +77,10 @@ namespace HexMapEngine {
             return new Vector2(center.x + gridSize * Mathf.Cos(angle_rad), center.y - gridSize * Mathf.Sin(angle_rad));
         }
 
-        public void UpdateMesh() {
+        /// <summary>
+        /// (Re-)Generate the complete mesh based on the HexMap.
+        /// </summary>
+        public void GenerateMesh() {
             var newMesh = new Mesh();
             newMesh.hideFlags = HideFlags.HideAndDontSave;
 
@@ -103,18 +116,24 @@ namespace HexMapEngine {
             newMesh.SetTriangles(triangles, 0);
             GetComponent<MeshFilter>().sharedMesh = newMesh;
 
-            UpdateTexture();
-            UpdateUVs();
+            OnTilesetChanged();
+            OnTileIndexChanged();
         }
 
-        public void UpdateTexture() {
+        /// <summary>
+        /// Call when the tileset was changed.
+        /// </summary>
+        public void OnTilesetChanged() {
             var material = transparentRendering ? new Material(Shader.Find("Unlit/Transparent")) : new Material(Shader.Find("Unlit/Texture"));
             material.hideFlags = HideFlags.HideAndDontSave;
             material.mainTexture = tileset.texture;
             GetComponent<MeshRenderer>().sharedMaterial = material;
         }
 
-        public void UpdateUVs() {
+        /// <summary>
+        /// Call when the tile index of several HexData was changed.
+        /// </summary>
+        public void OnTileIndexChanged() {
             var uvs = new List<Vector2>();
 
             foreach (HexData c in _hexMap.HexData) {
@@ -124,7 +143,10 @@ namespace HexMapEngine {
             GetComponent<MeshFilter>().sharedMesh.SetUVs(0, uvs);
         }
 
-        public void UpdateHexUV(Hex position) {
+        /// <summary>
+        /// Call when the tile index at a specified Hex position was changed.
+        /// </summary>
+        public void OnTileIndexChanged(Hex position) {
             HexData data = _hexMap.Get(position);
             if (data != null) {
                 int index = _hexMap.HexData.IndexOf(data);
@@ -141,6 +163,7 @@ namespace HexMapEngine {
         #endregion
 
         #region Drawing Hex Grid outlines
+        /// <summary>Should the grid around the Hexes be drawn?</summary>
         public bool renderGrid = true;
 
         public Material lineMaterial;

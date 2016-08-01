@@ -29,7 +29,11 @@ namespace HexMapEngine {
         }
 
         #region Related Hexes
-        public Hex[] GetOffsetHexes(IEnumerable<Hex> offsets) {
+        /// <summary>
+        /// Adds this Hex to all of the specified Hexes and returns the resulting Hexes.
+        /// Useful for centering a calculated area of hexes around an arbitrary Hex.
+        /// </summary>
+        public Hex[] CalcOffsetHexes(IEnumerable<Hex> offsets) {
             var result = new List<Hex>();
             foreach (Hex h in offsets)
                 result.Add(this + h);
@@ -42,9 +46,12 @@ namespace HexMapEngine {
         };
 
         public Hex[] GetNeighbors() {
-            return GetOffsetHexes(NEIGHBOR_OFFSETS);
+            return CalcOffsetHexes(NEIGHBOR_OFFSETS);
         }
 
+        /// <summary>
+        /// Returns a set of all Hexes that satisfy the specified coordinate restraints.
+        /// </summary>
         public static Hex[] CoordinateRestrainedGroup(int qmin, int qmax, int rmin, int rmax, int smin, int smax) {
             var result = new List<Hex>();
             for (int i = qmin; i <= qmax; i++) {
@@ -56,11 +63,14 @@ namespace HexMapEngine {
             return result.ToArray();
         }
 
+        /// <summary>
+        /// Returns a set of all Hexes that satisfy the specified symmetrical coordinate restraints.
+        /// </summary>
         public static Hex[] CoordinateRestrainedGroup(int qmax, int rmax, int smax) {
             return CoordinateRestrainedGroup(-qmax, qmax, -rmax, rmax, -smax, smax);
         }
 
-        public static Hex Center(IEnumerable<Hex> hexes) {
+        public static Hex CalcCenter(IEnumerable<Hex> hexes) {
             var result = new Hex(0, 0);
             int count = 0;
             foreach (Hex h in hexes) {
